@@ -1,5 +1,19 @@
 import { fixed } from "../main/math"
 
+function textToXML(text) {
+	text = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+	var result = '';
+	for(var i = 0; i < text.length; i++) {
+		var c = text.charCodeAt(i);
+		if(c >= 0x20 && c <= 0x7E) {
+			result += text[i];
+		} else {
+			result += '&#' + c + ';';
+		}
+	}
+	return result;
+}
+
 // draw using this instead of a canvas and call toSVG() afterward
 export function ExportAsSVG() {
 	this.fillStyle = 'black';

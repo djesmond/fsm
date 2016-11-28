@@ -12,20 +12,6 @@ import { canvasHasFocus } from "./util"
 import { ExportAsLaTeX } from "../export_as/latex"
 import { ExportAsSVG } from "../export_as/svg"
 
-function textToXML(text) {
-	text = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-	var result = '';
-	for(var i = 0; i < text.length; i++) {
-		var c = text.charCodeAt(i);
-		if(c >= 0x20 && c <= 0x7E) {
-			result += text[i];
-		} else {
-			result += '&#' + c + ';';
-		}
-	}
-	return result;
-}
-
 var caretTimer;
 
 function resetCaret() {
