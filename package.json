@@ -1,0 +1,16 @@
+{
+  "name": "fsm",
+  "version": "0.1.0",
+  "description": "An FSM designer in JS",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paavohuhtala/fsm.git"
+  },
+  "author": "Paavo Huhtala",
+  "contributors": ["Paavo Huhtala", "Evan Wallace"],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/paavohuhtala/fsm/issues"
+  },
+  "homepage": "https://github.com/paavohuhtala/fsm#readme"
+}
