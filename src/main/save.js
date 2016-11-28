@@ -1,4 +1,12 @@
-function restoreBackup() {
+
+import { Node } from "../elements/node"
+import { Link } from "../elements/link"
+import { StartLink } from "../elements/start_link"
+import { SelfLink } from "../elements/self_link"
+import { state } from "./state"
+
+export function restoreBackup() {
+	var { nodes, links } = state;
 	if(!localStorage || !JSON) {
 		return;
 	}
@@ -37,11 +45,13 @@ function restoreBackup() {
 			}
 		}
 	} catch(e) {
+		console.error(e)
 		localStorage['fsm'] = '';
 	}
 }
 
-function saveBackup() {
+export function saveBackup() {
+	var { nodes, links } = state;
 	if(!localStorage || !JSON) {
 		return;
 	}

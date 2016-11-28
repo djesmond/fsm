@@ -1,4 +1,10 @@
-function Link(a, b) {
+
+import { drawText, drawArrow } from "../main/draw"
+import { nodeRadius, snapToPadding, hitTargetPadding } from "../constants"
+import { state } from "../main/state"
+import { circleFromThreePoints } from "../main/math"
+
+export function Link(a, b) {
 	this.nodeA = a;
 	this.nodeB = b;
 	this.text = '';
@@ -73,6 +79,7 @@ Link.prototype.getEndPointsAndCircle = function() {
 };
 
 Link.prototype.draw = function(c) {
+	const { selectedObject } = state;
 	var stuff = this.getEndPointsAndCircle();
 	// draw arc
 	c.beginPath();

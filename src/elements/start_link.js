@@ -1,4 +1,9 @@
-function StartLink(node, start) {
+
+import { drawText, drawArrow } from "../main/draw"
+import { snapToPadding, hitTargetPadding } from "../constants"
+import { state } from "../main/state"
+
+export function StartLink(node, start) {
 	this.node = node;
 	this.deltaX = 0;
 	this.deltaY = 0;
@@ -35,6 +40,7 @@ StartLink.prototype.getEndPoints = function() {
 };
 
 StartLink.prototype.draw = function(c) {
+	const { selectedObject } = state;
 	var stuff = this.getEndPoints();
 
 	// draw the line

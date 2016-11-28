@@ -1,5 +1,7 @@
+import { fixed } from "../main/math"
+
 // draw using this instead of a canvas and call toSVG() afterward
-function ExportAsSVG() {
+export function ExportAsSVG() {
 	this.fillStyle = 'black';
 	this.strokeStyle = 'black';
 	this.lineWidth = 1;

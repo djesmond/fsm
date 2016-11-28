@@ -1,5 +1,7 @@
+import { fixed } from "../main/math"
+
 // draw using this instead of a canvas and call toLaTeX() afterward
-function ExportAsLaTeX() {
+export function ExportAsLaTeX() {
 	this._points = [];
 	this._texData = '';
 	this._scale = 0.1; // to convert pixels to document space (TikZ breaks if the numbers get too big, above 500?)

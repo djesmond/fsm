@@ -1,4 +1,9 @@
-function SelfLink(node, mouse) {
+
+import { nodeRadius, hitTargetPadding } from "../constants"
+import { drawText, drawArrow } from "../main/draw"
+import { state } from "../main/state"
+
+export function SelfLink(node, mouse) {
 	this.node = node;
 	this.anchorAngle = 0;
 	this.mouseOffsetAngle = 0;
@@ -48,6 +53,7 @@ SelfLink.prototype.getEndPointsAndCircle = function() {
 };
 
 SelfLink.prototype.draw = function(c) {
+	const { selectedObject } = state;
 	var stuff = this.getEndPointsAndCircle();
 	// draw arc
 	c.beginPath();

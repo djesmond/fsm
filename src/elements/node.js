@@ -1,4 +1,9 @@
-function Node(x, y) {
+
+import { nodeRadius } from "../constants"
+import { drawText } from "../main/draw"
+import { state } from "../main/state"
+
+export function Node(x, y) {
 	this.x = x;
 	this.y = y;
 	this.mouseOffsetX = 0;
@@ -18,6 +23,7 @@ Node.prototype.setAnchorPoint = function(x, y) {
 };
 
 Node.prototype.draw = function(c) {
+	const { selectedObject } = state;
 	// draw the circle
 	c.beginPath();
 	c.arc(this.x, this.y, nodeRadius, 0, 2 * Math.PI, false);

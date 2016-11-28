@@ -1,4 +1,7 @@
-function TemporaryLink(from, to) {
+
+import { drawArrow } from "../main/draw"
+
+export function TemporaryLink(from, to) {
 	this.from = from;
 	this.to = to;
 }
