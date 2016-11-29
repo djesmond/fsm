@@ -1,10 +1,10 @@
 
-import { convertLatexShortcuts, canvasHasFocus } from "./util"
+import { convertLatexShortcuts, convertSymbols, canvasHasFocus } from "./util"
 import { state } from "./state"
 
 export function drawText(c, originalText, x, y, angleOrNull, isSelected) {
     const { caretVisible, caretPosition } = state;
-	const text = convertLatexShortcuts(originalText);
+	let text = convertLatexShortcuts(originalText);
 	c.font = '20px "Times New Roman", serif';
 	var width = c.measureText(text).width;
 
@@ -26,6 +26,10 @@ export function drawText(c, originalText, x, y, angleOrNull, isSelected) {
 	if('advancedFillText' in c) {
 		c.advancedFillText(text, originalText, x + width / 2, y, angleOrNull);
 	} else {
+		if (!isSelected) {
+			text = convertSymbols(text, "unicode");
+		}
+		
 		x = Math.round(x);
 		y = Math.round(y);
 		c.fillText(text, x, y + 6);

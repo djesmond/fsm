@@ -1,4 +1,5 @@
 import { fixed } from "../main/math"
+import { convertSymbols } from "../main/util"
 
 // draw using this instead of a canvas and call toLaTeX() afterward
 export function ExportAsLaTeX() {
@@ -82,6 +83,7 @@ export function ExportAsLaTeX() {
 		return c.measureText(text);
 	};
 	this.advancedFillText = function(text, originalText, x, y, angleOrNull) {
+		originalText =  convertSymbols(originalText, "latex");
 		if(text.replace(' ', '').length > 0) {
 			var nodeParams = '';
 			// x and y start off as the center of the text, but will be moved to one side of the box when angleOrNull != null
