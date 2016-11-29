@@ -3,7 +3,7 @@ import { convertLatexShortcuts, canvasHasFocus } from "./util"
 import { state } from "./state"
 
 export function drawText(c, originalText, x, y, angleOrNull, isSelected) {
-    const { caretVisible } = state;
+    const { caretVisible, caretPosition } = state;
 	const text = convertLatexShortcuts(originalText);
 	c.font = '20px "Times New Roman", serif';
 	var width = c.measureText(text).width;
@@ -30,7 +30,8 @@ export function drawText(c, originalText, x, y, angleOrNull, isSelected) {
 		y = Math.round(y);
 		c.fillText(text, x, y + 6);
 		if(isSelected && caretVisible && canvasHasFocus() && document.hasFocus()) {
-			x += width;
+			const beforeCaretWidth = c.measureText(text.substr(0, caretPosition)).width;
+			x += beforeCaretWidth;
 			c.beginPath();
 			c.moveTo(x, y - 10);
 			c.lineTo(x, y + 10);

@@ -12,6 +12,8 @@ import { canvasHasFocus } from "./util"
 import { ExportAsLaTeX } from "../export_as/latex"
 import { ExportAsSVG } from "../export_as/svg"
 
+window.state = state;
+
 var caretTimer;
 
 function resetCaret() {
@@ -49,7 +51,8 @@ function drawUsing(c) {
 }
 
 function draw() {
-	drawUsing(canvas.getContext('2d'));
+	const ctx = canvas.getContext('2d');
+	drawUsing(ctx);
 	saveBackup();
 }
 
@@ -83,6 +86,20 @@ function snapNode(node) {
 	}
 }
 
+function onSelectObject(obj, mouse) {
+	state.selectedObject = obj;
+	obj.onSelected();
+	if(shift && state.selectedObject instanceof Node) {
+		state.currentLink = new SelfLink(state.selectedObject, mouse);
+	} else {
+		state.movingObject = true;
+		if(state.selectedObject.setMouseStart) {
+			state.selectedObject.setMouseStart(mouse.x, mouse.y);
+		}
+	}
+	resetCaret();
+}
+
 window.onload = function() {
 	state.canvas = document.getElementById('canvas');
 	restoreBackup();
@@ -94,21 +111,23 @@ window.onload = function() {
 
 	canvas.onmousedown = function(e) {
 		var mouse = crossBrowserRelativeMousePos(e);
-		state.selectedObject = selectObject(mouse.x, mouse.y);
+		var newSelectedObject = selectObject(mouse.x, mouse.y);
 		state.movingObject = false;
 		state.originalClick = mouse;
 
-		if(state.selectedObject != null) {
-			if(shift && state.selectedObject instanceof Node) {
-				state.currentLink = new SelfLink(state.selectedObject, mouse);
-			} else {
-				state.movingObject = true;
-				if(state.selectedObject.setMouseStart) {
-					state.selectedObject.setMouseStart(mouse.x, mouse.y);
-				}
+		if (state.selectedObject != newSelectedObject) {
+			if (state.selectedObject != null) {
+				state.selectedObject.onUnselected();
 			}
-			resetCaret();
-		} else if(shift) {
+
+			if (newSelectedObject == null) {
+				state.selectedObject = null;
+			} else {
+				onSelectObject(newSelectedObject, mouse);
+			}
+		}
+
+		if (shift) {
 			state.currentLink = new TemporaryLink(mouse, mouse);
 		}
 
@@ -192,20 +211,21 @@ window.onload = function() {
 	};
 }
 
-var shift = false;
+let shift = false;
 
 document.onkeydown = function(e) {
-	const { selectedObject, links, nodes } = state;
+	const { selectedObject, links, nodes, caretPosition } = state;
 	var key = crossBrowserKey(e);
 
-	if(key == 16) {
+	if(key == 16) { // shift
 		shift = true;
 	} else if(!canvasHasFocus()) {
 		// don't read keystrokes when other things have focus
 		return true;
 	} else if(key == 8) { // backspace key
 		if(selectedObject != null && 'text' in selectedObject) {
-			selectedObject.text = selectedObject.text.substr(0, selectedObject.text.length - 1);
+			selectedObject.text = selectedObject.text.slice(0, Math.max(0, caretPosition - 1)) + selectedObject.text.slice(caretPosition);
+			state.caretPosition--;
 			resetCaret();
 			draw();
 		}
@@ -227,6 +247,17 @@ document.onkeydown = function(e) {
 			state.selectedObject = null;
 			draw();
 		}
+	} else if (selectedObject != null) {
+		if (key == 37) { // left arrow
+			state.caretPosition--;
+			resetCaret();
+			draw();
+		}
+		else if (key == 39) { // right arrow
+			state.caretPosition++;
+			resetCaret();
+			draw();
+		}
 	}
 };
 
@@ -239,14 +270,16 @@ document.onkeyup = function(e) {
 };
 
 document.onkeypress = function(e) {
-	const { selectedObject } = state;
+	const { selectedObject, caretPosition } = state;
 	// don't read keystrokes when other things have focus
 	var key = crossBrowserKey(e);
 	if(!canvasHasFocus()) {
 		// don't read keystrokes when other things have focus
 		return true;
 	} else if(key >= 0x20 && key <= 0x7E && !e.metaKey && !e.altKey && !e.ctrlKey && selectedObject != null && 'text' in selectedObject) {
-		selectedObject.text += String.fromCharCode(key);
+		const newChar = String.fromCharCode(key);
+		selectedObject.text = selectedObject.text.slice(0, Math.max(0, caretPosition)) + newChar + selectedObject.text.slice(caretPosition);
+		state.caretPosition++;
 		resetCaret();
 		draw();
 
