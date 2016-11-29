@@ -28,6 +28,16 @@ var symbolMappings = {
 	}
 }
 
+const permittedChars = ["\\", "_", ","];
+
+for (let x = 'A'.charCodeAt(0); x < 'z'.charCodeAt(0); x++) {
+	permittedChars.push(String.fromCharCode(x));
+}
+
+export function isCharAllowedInLabel(c) {
+	return permittedChars.indexOf(c) !== -1;
+}
+
 export function convertLatexShortcuts(text) {
 	// html greek characters
 	for(var i = 0; i < greekLetterNames.length; i++) {

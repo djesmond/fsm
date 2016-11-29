@@ -7,7 +7,7 @@ import { StartLink } from "../elements/start_link"
 import { TemporaryLink } from "../elements/temporary_link"
 import { state } from "./state"
 import { nodeRadius, snapToPadding, hitTargetPadding } from "../constants"
-import { canvasHasFocus } from "./util"
+import { canvasHasFocus, isCharAllowedInLabel } from "./util"
 
 import { ExportAsLaTeX } from "../export_as/latex"
 import { ExportAsSVG } from "../export_as/svg"
@@ -279,7 +279,7 @@ document.onkeypress = function(e) {
 		return true;
 	} else if (e.key.startsWith('Arrow')) {
 		return false;
-	} else if(key >= 0x20 && key <= 0x7E && !e.metaKey && !e.altKey && !e.ctrlKey && selectedObject != null && 'text' in selectedObject) {
+	} else if(isCharAllowedInLabel(e.key) && selectedObject != null && 'text' in selectedObject) {
 		const newChar = String.fromCharCode(key);
 		selectedObject.text = selectedObject.text.slice(0, Math.max(0, caretPosition)) + newChar + selectedObject.text.slice(caretPosition);
 		state.caretPosition++;
