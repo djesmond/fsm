@@ -215,14 +215,13 @@ let shift = false;
 
 document.onkeydown = function(e) {
 	const { selectedObject, links, nodes, caretPosition } = state;
-	var key = crossBrowserKey(e);
 
-	if(key == 16) { // shift
+	if(e.key === "Shift") {
 		shift = true;
 	} else if(!canvasHasFocus()) {
 		// don't read keystrokes when other things have focus
 		return true;
-	} else if(key == 8) { // backspace key
+	} else if(e.key === "Backspace") {
 		if(selectedObject != null && 'text' in selectedObject) {
 			selectedObject.text = selectedObject.text.slice(0, Math.max(0, caretPosition - 1)) + selectedObject.text.slice(caretPosition);
 			state.caretPosition--;
@@ -232,7 +231,7 @@ document.onkeydown = function(e) {
 
 		// backspace is a shortcut for the back button, but do NOT want to change pages
 		return false;
-	} else if(key == 46) { // delete key
+	} else if(e.key === "Delete") {
 		if(selectedObject != null) {
 			for(var i = 0; i < nodes.length; i++) {
 				if(nodes[i] == selectedObject) {
@@ -248,15 +247,17 @@ document.onkeydown = function(e) {
 			draw();
 		}
 	} else if (selectedObject != null) {
-		if (key == 37) { // left arrow
+		if (e.key === "ArrowLeft") {
 			state.caretPosition--;
 			resetCaret();
 			draw();
+			return false;
 		}
-		else if (key == 39) { // right arrow
+		else if (e.key === "ArrowRight") {
 			state.caretPosition++;
 			resetCaret();
 			draw();
+			return false;
 		}
 	}
 };
@@ -276,6 +277,8 @@ document.onkeypress = function(e) {
 	if(!canvasHasFocus()) {
 		// don't read keystrokes when other things have focus
 		return true;
+	} else if (e.key.startsWith('Arrow')) {
+		return false;
 	} else if(key >= 0x20 && key <= 0x7E && !e.metaKey && !e.altKey && !e.ctrlKey && selectedObject != null && 'text' in selectedObject) {
 		const newChar = String.fromCharCode(key);
 		selectedObject.text = selectedObject.text.slice(0, Math.max(0, caretPosition)) + newChar + selectedObject.text.slice(caretPosition);
