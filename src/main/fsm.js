@@ -58,12 +58,12 @@ function draw() {
 
 function selectObject(x, y) {
 	const { nodes, links } = state;
-	for(var i = 0; i < nodes.length; i++) {
+	for(var i = nodes.length - 1; i >= 0; i--) {
 		if(nodes[i].containsPoint(x, y)) {
 			return nodes[i];
 		}
 	}
-	for(var i = 0; i < links.length; i++) {
+	for(var i = links.length - 1; i >= 0; i--) {
 		if(links[i].containsPoint(x, y)) {
 			return links[i];
 		}
@@ -108,6 +108,7 @@ window.onload = function() {
 	window.saveAsPNG = saveAsPNG;
 	window.saveAsLaTeX = saveAsLaTeX;
 	window.saveAsSVG = saveAsSVG;
+	window.saveAsJSON = saveAsJSON;
 
 	canvas.onmousedown = function(e) {
 		var mouse = crossBrowserRelativeMousePos(e);
@@ -363,4 +364,9 @@ function saveAsLaTeX() {
 	state.selectedObject = oldSelectedObject;
 	var texData = exporter.toLaTeX();
 	output(texData);
+}
+
+function saveAsJSON() {
+	const data = JSON.stringify(state);
+	output(data);
 }

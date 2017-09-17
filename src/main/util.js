@@ -28,9 +28,13 @@ var symbolMappings = {
 	}
 }
 
-const permittedChars = ["\\", "_", ","];
+const permittedChars = ["\\", "_", ",", "+", "-", "~", "/", "*", " ", "(", ")", "[", "]", "=", ">", "<"];
 
 for (let x = 'A'.charCodeAt(0); x < 'z'.charCodeAt(0); x++) {
+	permittedChars.push(String.fromCharCode(x));
+}
+
+for (let x = '0'.charCodeAt(0); x < '9'.charCodeAt(0); x++) {
 	permittedChars.push(String.fromCharCode(x));
 }
 
