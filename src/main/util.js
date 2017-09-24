@@ -25,10 +25,14 @@ var symbolMappings = {
 	"<=": {
 		unicode: "⇐",
 		latex: "\\Leftarrow"
+	},
+	"{}": {
+		unicode: "∅",
+		latex: "\\emptyset"
 	}
 }
 
-const permittedChars = ["\\", "_", ",", "+", "-", "~", "/", "*", " ", "(", ")", "[", "]", "=", ">", "<"];
+const permittedChars = ["\\", "_", ",", "+", "-", "~", "/", "*", " ", "(", ")", "[", "]", "=", ">", "<", "{", "}"];
 
 for (let x = 'A'.charCodeAt(0); x < 'z'.charCodeAt(0); x++) {
 	permittedChars.push(String.fromCharCode(x));
