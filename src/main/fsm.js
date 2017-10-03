@@ -108,7 +108,7 @@ window.onload = function() {
 	canvas.id = "canvas";
 	canvas.classList.add('canvas');
 	canvas.width = window.innerWidth;
-	canvas.height = window.innerHeight * 0.8;
+	canvas.height = window.innerHeight - 100;
 	
 	document.getElementById('canvasContainer').appendChild(canvas);
 	state.canvas = document.getElementById('canvas');
