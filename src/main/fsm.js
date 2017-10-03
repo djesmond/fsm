@@ -101,14 +101,28 @@ function onSelectObject(obj, mouse) {
 }
 
 window.onload = function() {
+
+	// Create and inject the canvas with js to get the correct dimensions
+	var canvas = document.createElement('canvas');
+	
+	canvas.id = "canvas";
+	canvas.classList.add('canvas');
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight * 0.8;
+	
+	document.getElementById('canvasContainer').appendChild(canvas);
 	state.canvas = document.getElementById('canvas');
+
 	restoreBackup();
 	draw();
 
+	window.clearCanvas = clearCanvas;
 	window.saveAsPNG = saveAsPNG;
 	window.saveAsLaTeX = saveAsLaTeX;
 	window.saveAsSVG = saveAsSVG;
 	window.saveAsJSON = saveAsJSON;
+	window.toggleHelp = toggleHelp;
+	window.toggleExport = toggleExport;
 
 	canvas.onmousedown = function(e) {
 		var mouse = crossBrowserRelativeMousePos(e);
@@ -116,7 +130,7 @@ window.onload = function() {
 		state.movingObject = false;
 		state.originalClick = mouse;
 
-		if (state.selectedObject != newSelectedObject) {
+		//if (state.selectedObject != newSelectedObject) {
 			if (state.selectedObject != null) {
 				state.selectedObject.onUnselected();
 			}
@@ -126,7 +140,7 @@ window.onload = function() {
 			} else {
 				onSelectObject(newSelectedObject, mouse);
 			}
-		}
+		//}
 
 		if (shift) {
 			state.currentLink = new TemporaryLink(mouse, mouse);
@@ -335,6 +349,14 @@ function output(text) {
 	element.value = text;
 }
 
+function clearCanvas(){
+		window.state.nodes = [];
+		window.state.links = [];
+		localStorage.removeItem('fsm');			
+		var context = canvas.getContext('2d')
+		context.clearRect(0, 0, canvas.width, canvas.height);
+}
+
 function saveAsPNG() {
 	var oldSelectedObject = state.selectedObject;
 	state.selectedObject = null;
@@ -370,3 +392,22 @@ function saveAsJSON() {
 	const data = JSON.stringify(state);
 	output(data);
 }
+
+function toggleVisibility(id) {
+	var elm = document.getElementById(id);
+	if (elm.classList.contains('hide')) {
+		elm.classList.remove('hide');
+	} else {
+		elm.classList.add('hide');
+	}
+}
+
+function toggleHelp() {
+	toggleVisibility('helpContainer');
+}
+
+function toggleExport() {
+	toggleVisibility('exportModal');
+}
+
+
