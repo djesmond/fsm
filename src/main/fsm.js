@@ -130,7 +130,7 @@ window.onload = function() {
 		state.movingObject = false;
 		state.originalClick = mouse;
 
-		if (state.selectedObject != newSelectedObject) {
+		//if (state.selectedObject != newSelectedObject) {
 			if (state.selectedObject != null) {
 				state.selectedObject.onUnselected();
 			}
@@ -140,7 +140,7 @@ window.onload = function() {
 			} else {
 				onSelectObject(newSelectedObject, mouse);
 			}
-		}
+		//}
 
 		if (shift) {
 			state.currentLink = new TemporaryLink(mouse, mouse);
