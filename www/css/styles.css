@@ -155,10 +155,10 @@ body {
 
 .modal {
   position: fixed;
-  width: 40%;
-  height: 40%;
-  top: 30%;
-  left: 30%;
+  width: 70%;
+  height: 60%;
+  top: 15%;
+  left: 15%;
   background-color: white;
   border-width: 1px;
   border-style: solid;
