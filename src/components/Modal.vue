@@ -17,5 +17,44 @@
 <script>
 export default {};
 </script>
-<style lang="sass" scoped>
+<style lang="scss" scoped>
+.modal {
+  position: fixed;
+  width: 70%;
+  height: 60%;
+  top: 15%;
+  left: 15%;
+  background-color: white;
+  border-width: 1px;
+  border-style: solid;
+  border-color: lightgrey;
+  border-radius: 4px;
+}
+.modalTitle {
+  font-size: 20px;
+  padding: 16px;
+  width: 60%;
+  display: inline-block;
+}
+
+.modalClose {
+  float: right;
+  position: relative;
+  right: 16px;
+  top: 16px;
+  color: black;
+  text-decoration: none;
+}
+
+.modalContent {
+  margin: 16px;
+  width: 90%;
+  height: 70%;
+
+}
+.exportOutput {
+  width: 100%;
+  min-height: 100px;
+  height: 90%;
+}
 </style>

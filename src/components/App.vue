@@ -20,30 +20,8 @@
         </div>
       </div>
       <div class="content">
-        <div id="helpContainer" class="help">
-          <p>This big grid is the FSM designer.&nbsp; Here's how to use it:</p>
-          <ul>
-            <li>
-              <b>Add a state:</b> double-click on the canvas</li>
-            <li>
-              <b>Add an arrow transition:</b> shift-drag on the canvas</li>
-            <li>
-              <b>Curve a transition:</b> click and hold an existing transition. Drag it around</li>
-            <li>
-              <b>Move something:</b> drag it around</li>
-            <li>
-              <b>Delete something:</b> click it and press the delete key (not the backspace key) this is fn + backspace on MacBooks</li>
-          </ul>
-          <ul>
-            <li>
-              <b>Make accept state:</b> double-click on an existing state</li>
-            <li>
-              <b>Type numeric subscript:</b> put an underscore before the number (like "S_0")</li>
-            <li>
-              <b>Type greek letter:</b> put a backslash before it (like "\beta")</li>
-          </ul>
-        </div>
-        <div id="canvasContainer"></div>
+        <Help/>
+        <CanvasController />
       </div>
       <footer>
         <p>Created by
@@ -57,13 +35,85 @@
 </template>
 <script>
 import Modal from './Modal.vue';
+import Help from './Help.vue';
+import CanvasController from './CanvasController.vue';
 
 export default {
   components: {
     Modal,
+    Help,
+    CanvasController,
   },
 };
 </script>
 <style lang="scss" scoped>
+.container {
+}
 
+.headerContainer {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.header {
+  height: 60px;
+  background-color: #009688;
+  border-width: 0 0 1px 0;
+  border-color: #B6B6B6;
+  border-style: solid;
+  padding-left: 16px;
+}
+
+.headerTitle {
+  font-size: 24px;
+  font-weight: 300;
+  color: white;
+  margin: 16px 0 0 0;
+  display: inline-block;
+}
+
+.github {
+  width: 40px;
+  height: 60px;
+  float: right;
+  position: relative;
+  right: 20px;
+  color: white;
+  padding-top: 15px;
+
+}
+
+.toolbox {
+  width: 100%;
+  height: 40px;
+  background-color: white;
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: lightgrey;
+
+}
+
+.toolboxButton {
+  height: 40px;
+  float: left;
+  padding: 0 8px;
+  text-decoration: none;
+  color: #292929;
+}
+
+.toolboxButton i {
+  padding-top: 12px;
+  margin-right: 4px;
+}
+.toggleHelp {
+  float: right;
+  padding-right: 0;
+}
+
+.content {
+  margin-top: 100px;
+  width: 100%;
+}
 </style>
