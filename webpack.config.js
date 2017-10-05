@@ -12,11 +12,12 @@ module.exports = function(env) {
 
         entry: {
             'fsm': './main/fsm.js',
+            'app': './index.js',
         },
 
         output: {
-          path: path.resolve(__dirname, "www"),
-          filename: "fsm.js",
+          path: path.resolve(__dirname, 'www'),
+          filename: "[name].js",
         },
 
         module: {
@@ -28,6 +29,16 @@ module.exports = function(env) {
                   loader: 'babel-loader',
                 }
               },
+              {
+                test: /\.vue$/,
+                loader: 'vue-loader',
+                options: {
+                  loaders: {
+                      'scss': 'vue-style-loader!css-loader!sass-loader',
+                      'sass': 'vue-style-loader!css-loader!sass-loader?indentedSyntax'
+                  }
+              }
+              }
             ]
         },
 
