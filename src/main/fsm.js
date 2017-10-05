@@ -109,8 +109,6 @@ window.onload = function() {
 	window.saveAsLaTeX = saveAsLaTeX;
 	window.saveAsSVG = saveAsSVG;
 	window.saveAsJSON = saveAsJSON;
-	window.toggleHelp = toggleHelp;
-	window.toggleExport = toggleExport;
 
 	canvas.onmousedown = function(e) {
 		var mouse = crossBrowserRelativeMousePos(e);
@@ -380,22 +378,3 @@ function saveAsJSON() {
 	const data = JSON.stringify(state);
 	output(data);
 }
-
-function toggleVisibility(id) {
-	var elm = document.getElementById(id);
-	if (elm.classList.contains('hide')) {
-		elm.classList.remove('hide');
-	} else {
-		elm.classList.add('hide');
-	}
-}
-
-function toggleHelp() {
-	toggleVisibility('helpContainer');
-}
-
-function toggleExport() {
-	toggleVisibility('exportModal');
-}
-
-

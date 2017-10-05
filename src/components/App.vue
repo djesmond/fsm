@@ -13,14 +13,14 @@
             <i class="fa fa-trash" aria-hidden="true"></i>Clear</a>
           <div class="toolboxButton import">
             <i class="fa fa-upload" aria-hidden="true"></i>Import</div>
-          <a href="javascript:toggleExport()" class="toolboxButton export">
-            <i class="fa fa-download" aria-hidden="true"></i>Export</a>
-          <a href="javascript:toggleHelp()" class="toolboxButton toggleHelp">
-            <i class="fa fa-question-circle" aria-hidden="true"></i>Help</a>
+          <div @click="showExport = !showExport" class="toolboxButton export">
+            <i class="fa fa-download" aria-hidden="true"></i>Export</div>
+          <div @click="showHelp = !showHelp" class="toolboxButton toggleHelp">
+            <i class="fa fa-question-circle" aria-hidden="true"></i>Help</div>
         </div>
       </div>
       <div class="content">
-        <Help/>
+        <Help v-show="showHelp"/>
         <CanvasController />
       </div>
       <footer>
@@ -29,7 +29,7 @@
           <a href="http://paavo.me/">Paavo Huhtala</a> and
           <a href="https://github.com/djesmond">Niclas Sommer</a> in 2016 - 2017.</p>
       </footer>
-      <Modal/>
+      <Modal v-show="showExport" v-on:toggleExport="toggleExport"/>
     </div>
   </div>
 </template>
@@ -39,10 +39,21 @@ import Help from './Help.vue';
 import CanvasController from './CanvasController.vue';
 
 export default {
+  data() {
+    return {
+      showHelp: true,
+      showExport: false,
+    }
+  },
   components: {
     Modal,
     Help,
     CanvasController,
+  },
+  methods: {
+    toggleExport(show) {
+      this.showExport = show;
+    }
   },
 };
 </script>
@@ -101,6 +112,7 @@ export default {
   padding: 0 8px;
   text-decoration: none;
   color: #292929;
+  cursor: pointer;
 }
 
 .toolboxButton i {

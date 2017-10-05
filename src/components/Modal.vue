@@ -1,9 +1,9 @@
 <template>
-  <div id="exportModal" class="modal hide">
+  <div id="exportModal" class="modal">
     <div class="modalTitle">Export as:</div>
-    <a href="javascript:toggleExport()" class="modalClose">
+    <div @click="requestClose" class="modalClose">
       <i class="fa fa-times" aria-hidden="true"></i>
-    </a>
+    </div>
     <div class="modalContent">
       <p>Note that the grid is not exported</p>
       <a href="javascript:saveAsPNG()">PNG</a> |
@@ -15,7 +15,17 @@
   </div>
 </template>
 <script>
-export default {};
+export default {
+  data() {
+    return {
+    }
+  },
+  methods: {
+    requestClose() {
+      this.$emit('toggleExport', false);
+    }
+  }
+};
 </script>
 <style lang="scss" scoped>
 .modal {
@@ -44,6 +54,7 @@ export default {};
   top: 16px;
   color: black;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .modalContent {
