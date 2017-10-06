@@ -25,18 +25,31 @@ import { StartLink } from "../elements/start_link";
 export default {
   data() {
     return {
+      // The state machine we are creating
       fsm: fsm(),
+      // Reference to the HTML 5 canvas
+      // Created during the mouting
       canvas: null,
+      // Reference to the 2d context of the canvas
+      // Created during the mouting
       context: null,
+      // The selected object of the FSM
       selectedObject: null,
+      // Control if we are moving (dragging) 
+      // objects on the canvas
       movingObject: false,
+      // While creating a new link we keep it here
       currentLink: null,
+      // Record the location of mouse clicks on canvas
+      // Used for creating links
       originalClick: null,
     }
   },
   methods: {
     onMouseDown(e) {
       const position = mouse.crossBrowserRelativeMousePos(e);
+      // Record where the click was made
+      // Used for placing start links
       this.originalClick = position;
       const target = this.selectObject(position.x, position.y);
       // If we hit a node or a link
@@ -47,6 +60,7 @@ export default {
         this.selectedObject = null;
       }
       if (e.shiftKey) {
+        // Start drawing a link
         this.currentLink = new TemporaryLink(position, position);
       }
 
@@ -54,7 +68,10 @@ export default {
     },
     onMouseUp(e) {
       this.movingObject = false;
+      // If we are placing a link
       if (this.currentLink) {
+        // Make sure that the link is valid:
+        // It needs a target node
         if (!(this.currentLink instanceof TemporaryLink)) {
           this.selectedObject = this.currentLink;
           this.fsm.state.links.push(this.currentLink);
@@ -68,10 +85,13 @@ export default {
       const position = mouse.crossBrowserRelativeMousePos(e);
       const target = this.selectObject(position.x, position.y);
       if (target) {
+        // If we double clicked on the current node
         if (target === this.selectedObject && target instanceof Node) {
+          // Toggle the accept state
           this.selectedObject.isAcceptState = !this.selectedObject.isAcceptState;
         }
       } else {
+        // Nothing was hit, create a new node at that position
         const newNode = this.fsm.createNode(position.x, position.y);
         this.selectedObject = newNode;
       }
@@ -114,8 +134,10 @@ export default {
       } else {
         // Otherwise we check for moving Nodes
         if (this.movingObject) {
+          // Update the position to the mouse position
           this.selectedObject.setAnchorPoint(position.x, position.y);
           if (this.selectedObject instanceof Node) {
+            // Snap nodes to align with others
             this.snapNode(this.selectedObject);
           }
           this.render();
@@ -131,9 +153,10 @@ export default {
     },
     selectObject(x, y) {
       const { nodes, links } = this.fsm.state;
-
+      // Check the nodes positions and see if any matches
       let target = nodes.find((node) => node.containsPoint(x,y));
 
+      // If we didnt hit a node then check for links
       if (!target) {
         target = links.find((link) => link.containsPoint(x,y));
       }
@@ -142,12 +165,14 @@ export default {
     },
     snapNode(node) {
       // Snap a nodes position to other nodes
+      // By adjusting the position
       this.fsm.state.nodes.forEach((elm) => {
         if (elm !== node) {
+          // If the x position is within 5 pixels
           if (Math.abs(node.x - elm.x) < 5) {
             node.x = elm.x;
           }
-
+          // If the xyposition is within 5 pixels
           if (Math.abs(node.y - elm.y) < 5) {
             node.y = elm.y;
           }
@@ -157,12 +182,15 @@ export default {
 
     render() {
       const { nodes, links } = this.fsm.state;
+      // Clear the canvas
       this.context.clearRect(0, 0, canvas.width, canvas.height);
       this.context.save();
       this.context.translate(0.5, 0.5);
 
+      // Draw each node
       nodes.map(node => {
         this.context.lineWidth = 1;
+        // Draw the selected node as blue (if it exist)
         this.context.fillStyle =  this.context.strokeStyle = (node === this.selectedObject) ? 'blue' : 'black';
         node.draw(this.context);
       });
@@ -173,6 +201,7 @@ export default {
         link.draw(this.context);
       });
 
+      // If we are currently drawing a link
       if (this.currentLink) {
         this.context.lineWidth = 1;
         this.context.fillStyle = this.context.strokeStyle = 'black';
