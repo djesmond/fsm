@@ -1,14 +1,14 @@
 <template>
 <div id="helpContainer" class="help">
   <div><b>Add a state:</b> double-click on the canvas</div>
-  <div><b>Add an arrow transition:</b> <span class="key">Shift</span> + drag on the canvas</div>
+  <div><b>Add an arrow transition:</b> <span class="key">shift</span> + drag on the canvas</div>
   <div><b>Curve a transition:</b> click and hold an existing transition. Drag it around</div>
   <div><b>Move something:</b> drag it around</div>
-  <div><b>Delete something:</b> click it and press <span class="key">delete</span> (not <span class="key">Backspace</span>) this
-    is <span class="key">fn</span> + <span class="key">Backspace</span> on MacBooks</div>
+  <div><b>Delete something:</b> click it and press <span class="key">delete</span> . This
+    is <span class="key">fn</span> + <span class="key">backspace</span> on MacBooks</div>
   <div><b>Make accept state:</b> double-click on an existing state</div>
-  <div><b>Type numeric subscript:</b> put an <span class="key">underscore</span> before the number (like "S_0")</div>
-  <div><b>Type greek letter:</b> put a <span class="key">backslash</span> before it (like "\beta")</div>
+  <div><b>Type numeric subscript:</b> put an <span class="key">_</span> before the number (like "S_0")</div>
+  <div><b>Type greek letter:</b> put a <span class="key">\</span> before it (like "\beta")</div>
 </div>
 </template>
 <script>
