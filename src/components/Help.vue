@@ -1,27 +1,15 @@
 <template>
-  <div id="helpContainer" class="help">
-    <p>This big grid is the FSM designer.&nbsp; Here's how to use it:</p>
-    <ul>
-      <li>
-        <b>Add a state:</b> double-click on the canvas</li>
-      <li>
-        <b>Add an arrow transition:</b> shift-drag on the canvas</li>
-      <li>
-        <b>Curve a transition:</b> click and hold an existing transition. Drag it around</li>
-      <li>
-        <b>Move something:</b> drag it around</li>
-      <li>
-        <b>Delete something:</b> click it and press the delete key (not the backspace key) this is fn + backspace on MacBooks</li>
-    </ul>
-    <ul>
-      <li>
-        <b>Make accept state:</b> double-click on an existing state</li>
-      <li>
-        <b>Type numeric subscript:</b> put an underscore before the number (like "S_0")</li>
-      <li>
-        <b>Type greek letter:</b> put a backslash before it (like "\beta")</li>
-    </ul>
-  </div>
+<div id="helpContainer" class="help">
+  <div><b>Add a state:</b> double-click on the canvas</div>
+  <div><b>Add an arrow transition:</b> <span class="key">Shift</span> + drag on the canvas</div>
+  <div><b>Curve a transition:</b> click and hold an existing transition. Drag it around</div>
+  <div><b>Move something:</b> drag it around</div>
+  <div><b>Delete something:</b> click it and press <span class="key">delete</span> (not <span class="key">Backspace</span>) this
+    is <span class="key">fn</span> + <span class="key">Backspace</span> on MacBooks</div>
+  <div><b>Make accept state:</b> double-click on an existing state</div>
+  <div><b>Type numeric subscript:</b> put an <span class="key">underscore</span> before the number (like "S_0")</div>
+  <div><b>Type greek letter:</b> put a <span class="key">backslash</span> before it (like "\beta")</div>
+</div>
 </template>
 <script>
 export default {
@@ -36,7 +24,26 @@ export default {
   position: fixed;
   right: 8px;
   top: 100px;
-  width: 20%;
+  width: 25%;
   padding: 8px;
+
+  div {
+    margin-bottom: 8px;
+    line-height: 30px;
+  }
+}
+
+.key {
+  color: #5E5E5E;
+  text-decoration: none;
+  text-align: center;
+  font-size: 12px;
+  margin: 20px auto;
+  padding: 5px 10px;
+  background: #EFF0F2;
+  border-radius: 4px;
+  border-top: 1px solid #F5F5F5;
+  box-shadow: inset 0 0 25px #E8E8E8, 0 1px 0 #C3C3C3, 0 2px 0 #C9C9C9, 0 2px 3px #333;
+  text-shadow: 0px 1px 0px #F5F5F5;
 }
 </style>
