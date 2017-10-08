@@ -43,6 +43,8 @@ export default {
       // Record the location of mouse clicks on canvas
       // Used for creating links
       originalClick: null,
+      caretTimer: null,
+      caretVisible: false,
     }
   },
   methods: {
@@ -56,6 +58,7 @@ export default {
       if (target) {
         this.selectedObject = target;
         this.movingObject = true;
+        this.resetCaret();
       } else { // We hit the canvas
         this.selectedObject = null;
       }
@@ -75,7 +78,7 @@ export default {
         if (!(this.currentLink instanceof TemporaryLink)) {
           this.selectedObject = this.currentLink;
           this.fsm.state.links.push(this.currentLink);
-          //resetCaret();
+          this.resetCaret();
         }
         this.currentLink = null;
         this.render();
@@ -94,6 +97,7 @@ export default {
         // Nothing was hit, create a new node at that position
         const newNode = this.fsm.createNode(position.x, position.y);
         this.selectedObject = newNode;
+        this.resetCaret();
       }
       this.render();
     },
@@ -179,6 +183,14 @@ export default {
         }
       });
     },
+    resetCaret() {
+	    clearInterval(this.caretTimer);
+	    this.caretTimer = setInterval(() => {
+		    this.caretVisible = !this.caretVisible;
+		    this.render();
+	    }, 500);
+	    this.caretVisible = true;
+    },
 
     render() {
       const { nodes, links } = this.fsm.state;
@@ -207,6 +219,14 @@ export default {
         this.context.fillStyle = this.context.strokeStyle = 'black';
         this.currentLink.draw(this.context);
       }
+      // Render caret
+      if (this.selectedObject && this.caretVisible) {
+        this.context.beginPath();
+			  this.context.moveTo(this.selectedObject.x, this.selectedObject.y - 10);
+			  this.context.lineTo(this.selectedObject.x, this.selectedObject.y + 10);
+			  this.context.stroke();
+      }
+
       this.context.restore();
     },
 
