@@ -150,9 +150,13 @@ export default {
     },
     onDelete() {
       if (this.selectedObject) {
-        this.fsm.removeNode(this.selectedObject);
+        if (this.selectedObject instanceof Node) {
+          this.fsm.removeNode(this.selectedObject);
+        } else {
+          this.fsm.removeLink(this.selectedObject);
+        }
         this.selectedObject = null;
-        this.render()
+        this.render();
       }
     },
     selectObject(x, y) {

@@ -19,6 +19,11 @@ const fsm = function fsm() {
       this.state.nodes = this.state.nodes.filter((elm) => {
         return elm !== node;
       });
+    },
+    removeLink(link) {
+      this.state.links = this.state.links.filter((elm) => {
+        return elm !== link;
+      });
     }
   };
 };
