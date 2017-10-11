@@ -128,4 +128,16 @@ export default {
   margin-top: 100px;
   width: 100%;
 }
+footer {
+  pointer-events:none; 
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  text-align: center;
+  color: #A3A3A3;
+}
+footer a {
+  pointer-events:auto;
+  color: #A3A3A3;
+}
 </style>
