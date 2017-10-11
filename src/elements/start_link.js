@@ -2,7 +2,6 @@
 import { TextElement } from "./text_element"
 import { drawText, drawArrow } from "../main/draw"
 import { snapToPadding, hitTargetPadding } from "../constants"
-import { state } from "../main/state"
 
 export class StartLink extends TextElement {
 	constructor(node, start) {
@@ -14,6 +13,11 @@ export class StartLink extends TextElement {
 		if(start) {
 			this.setAnchorPoint(start.x, start.y);
 		}
+	}
+
+	getLabelPosition() {
+		// Place it off screen
+		return {x: -200, y: -100};
 	}
 
 	setAnchorPoint(x, y) {
@@ -42,7 +46,6 @@ export class StartLink extends TextElement {
 	}
 
 	draw(c) {
-		const { selectedObject } = state;
 		var stuff = this.getEndPoints();
 
 		// draw the line
@@ -53,7 +56,7 @@ export class StartLink extends TextElement {
 
 		// draw the text at the end without the arrow
 		var textAngle = Math.atan2(stuff.startY - stuff.endY, stuff.startX - stuff.endX);
-		drawText(c, this.text, stuff.startX, stuff.startY, textAngle, selectedObject == this);
+		drawText(c, this.text, stuff.startX, stuff.startY, textAngle);
 
 		// draw the head of the arrow
 		drawArrow(c, stuff.endX, stuff.endY, Math.atan2(-this.deltaY, -this.deltaX));

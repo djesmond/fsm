@@ -2,7 +2,6 @@
 import { TextElement } from "./text_element"
 import { nodeRadius, hitTargetPadding } from "../constants"
 import { drawText, drawArrow } from "../main/draw"
-import { state } from "../main/state"
 
 export class SelfLink extends TextElement {
 	constructor(node, mouse) {
@@ -14,6 +13,10 @@ export class SelfLink extends TextElement {
 		if(mouse) {
 			this.setAnchorPoint(mouse.x, mouse.y);
 		}
+	}
+
+	getLabelPosition() {
+		return {x: this.node.x - 30, y: this.node.y - 20};
 	}
 
 	setMouseStart(x, y) {
@@ -55,7 +58,6 @@ export class SelfLink extends TextElement {
 	}
 
 	draw(c) {
-		const { selectedObject } = state;
 		var stuff = this.getEndPointsAndCircle();
 		// draw arc
 		c.beginPath();
@@ -64,7 +66,7 @@ export class SelfLink extends TextElement {
 		// draw the text on the loop farthest from the node
 		var textX = stuff.circleX + stuff.circleRadius * Math.cos(this.anchorAngle);
 		var textY = stuff.circleY + stuff.circleRadius * Math.sin(this.anchorAngle);
-		drawText(c, this.text, textX, textY, this.anchorAngle, selectedObject == this);
+		drawText(c, this.text, textX, textY, this.anchorAngle);
 		// draw the head of the arrow
 		drawArrow(c, stuff.endX, stuff.endY, stuff.endAngle + Math.PI * 0.4);
 	}

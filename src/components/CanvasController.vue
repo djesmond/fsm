@@ -1,4 +1,5 @@
 <template>
+<div>
   <div id="canvasContainer">
     <canvas 
       id="canvas" 
@@ -12,6 +13,20 @@
       v-on:keyup.8="onDelete">
     </canvas>
   </div>
+  <div 
+    class="labelContainer"
+    v-show="selectedObject && !movingObject"
+    :style="labelInputPosition">
+    <div class="labelHeader">Label</div>
+    <input 
+      v-model="labelText" 
+      type="text"
+      placeholder="Label"
+      id="labelInput"
+      class="labelInput"
+      />
+  </div>
+</div>
 </template>
 <script>
 import fsm from '../util/fsm';
@@ -43,8 +58,23 @@ export default {
       // Record the location of mouse clicks on canvas
       // Used for creating links
       originalClick: null,
-      caretTimer: null,
-      caretVisible: false,
+      labelText: '',
+    }
+  },
+  watch: {
+    labelText(labelText) {
+      // Update the label on the selected object as we type
+      if (this.selectedObject) {
+        this.selectedObject.text = labelText;
+        this.render();
+      }
+    },
+    selectedObject(obj) {
+      if (obj) {
+        setTimeout(() => {
+          document.getElementById('labelInput').focus();
+        }, 200)
+      }
     }
   },
   methods: {
@@ -57,10 +87,13 @@ export default {
       // If we hit a node or a link
       if (target) {
         this.selectedObject = target;
+
+        this.labelText = target.text;
+
         this.movingObject = true;
-        this.resetCaret();
-      } else { // We hit the canvas
+      } else if (this.selectedObject) { // We hit the canvas
         this.selectedObject = null;
+        this.labelText = '';
       }
       if (e.shiftKey) {
         // Start drawing a link
@@ -69,6 +102,7 @@ export default {
 
       this.render();
     },
+
     onMouseUp(e) {
       this.movingObject = false;
       // If we are placing a link
@@ -78,12 +112,12 @@ export default {
         if (!(this.currentLink instanceof TemporaryLink)) {
           this.selectedObject = this.currentLink;
           this.fsm.state.links.push(this.currentLink);
-          this.resetCaret();
         }
         this.currentLink = null;
         this.render();
       }
     },
+
     onDoubleClick(e) {
       const position = mouse.crossBrowserRelativeMousePos(e);
       const target = this.selectObject(position.x, position.y);
@@ -97,10 +131,10 @@ export default {
         // Nothing was hit, create a new node at that position
         const newNode = this.fsm.createNode(position.x, position.y);
         this.selectedObject = newNode;
-        this.resetCaret();
       }
       this.render();
     },
+
     onDrag(e) {
       const position = mouse.crossBrowserRelativeMousePos(e);
 
@@ -148,6 +182,7 @@ export default {
         }
       }
     },
+
     onDelete() {
       if (this.selectedObject) {
         if (this.selectedObject instanceof Node) {
@@ -159,6 +194,7 @@ export default {
         this.render();
       }
     },
+
     selectObject(x, y) {
       const { nodes, links } = this.fsm.state;
       // Check the nodes positions and see if any matches
@@ -171,6 +207,7 @@ export default {
       // Returns undefined if canvas was hit
       return target;
     },
+
     snapNode(node) {
       // Snap a nodes position to other nodes
       // By adjusting the position
@@ -187,13 +224,10 @@ export default {
         }
       });
     },
-    resetCaret() {
-	    clearInterval(this.caretTimer);
-	    this.caretTimer = setInterval(() => {
-		    this.caretVisible = !this.caretVisible;
-		    this.render();
-	    }, 500);
-	    this.caretVisible = true;
+
+    saveLabel() {
+      this.selectedObject.text = this.labelText;
+      this.labelText = '';
     },
 
     render() {
@@ -223,14 +257,6 @@ export default {
         this.context.fillStyle = this.context.strokeStyle = 'black';
         this.currentLink.draw(this.context);
       }
-      // Render caret
-      if (this.selectedObject && this.caretVisible) {
-        this.context.beginPath();
-			  this.context.moveTo(this.selectedObject.x, this.selectedObject.y - 10);
-			  this.context.lineTo(this.selectedObject.x, this.selectedObject.y + 10);
-			  this.context.stroke();
-      }
-
       this.context.restore();
     },
 
@@ -244,6 +270,15 @@ export default {
       // Dynmically set the height of the canvas
       return window.innerHeight - 105;
     },
+    // Calculate the aboslute position of the input based on the selected object
+    labelInputPosition() {
+      if (this.selectedObject) {
+        const position = this.selectedObject.getLabelPosition();
+        return `top:${position.y}px; left:${position.x - 20}px`;
+      } else {
+        return '';
+      }
+    }
   },
   mounted() {
     // This needs to be refactored as we progress with moving control to Vue
@@ -256,9 +291,44 @@ export default {
         this.onDelete();
       }
     });
+    document.addEventListener('mousedown', function (event) {
+      // If we double click on canvas
+      if (event.detail > 1 && event.target.id === 'canvas') {
+        // disable default
+        // We dont' want the browser to hightlight text etc
+        event.preventDefault();
+      }
+    }, false);
   }
 }
 </script>
 <style lang="scss" scoped>
-
+  .labelContainer {
+    position: absolute;
+    width: 150px;
+  }
+  .labelHeader {
+    border-radius: 3px 3px 0 0;
+    width: 100%;
+    height: 25px;
+    background-color: #ededed;
+    padding: 4px 8px 0 8px;
+    border: 1px solid #c3c3c3;
+    border-bottom: 0px;
+    color: grey;
+  }
+  .labelInput {
+    height: 15px;
+    width: 100%;
+    border-radius: 0 0 3px 3px;
+    border: 1px solid #c3c3c3;
+    -webkit-appearance: none;
+    font-size: 14px;
+    padding: 8px;
+    
+    &:focus {
+      border: 1px solid #c3c3c3;
+      outline: 0;
+    }
+  }
 </style>

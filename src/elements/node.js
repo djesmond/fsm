@@ -2,7 +2,6 @@
 import { TextElement } from "./text_element"
 import { nodeRadius } from "../constants"
 import { drawText } from "../main/draw"
-import { state } from "../main/state"
 
 export class Node extends TextElement {
 	constructor(x, y) {
@@ -12,6 +11,10 @@ export class Node extends TextElement {
 		this.mouseOffsetX = 0;
 		this.mouseOffsetY = 0;
 		this.isAcceptState = false;
+	}
+
+	getLabelPosition() {
+		return {x: this.x, y: this.y};
 	}
 
 	setMouseStart(x, y) {
@@ -25,14 +28,13 @@ export class Node extends TextElement {
 	}
 
 	draw(c) {
-		const { selectedObject } = state;
 		// draw the circle
 		c.beginPath();
 		c.arc(this.x, this.y, nodeRadius, 0, 2 * Math.PI, false);
 		c.stroke();
 
 		// draw the text
-		drawText(c, this.text, this.x, this.y, null, selectedObject == this);
+		drawText(c, this.text, this.x, this.y, null);
 
 		// draw a double circle for an accept state
 		if(this.isAcceptState) {

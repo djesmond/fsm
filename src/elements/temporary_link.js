@@ -7,6 +7,11 @@ export class TemporaryLink {
 		this.to = to;
 	}
 
+	getLabelPosition() {
+		// Place it off screen
+		return {x: -200, y: -100};
+	}
+
 	draw(c) {
 		// draw the line
 		c.beginPath();
