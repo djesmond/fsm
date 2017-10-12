@@ -4,7 +4,7 @@ import { convertLatexShortcuts, convertSymbols } from "./util"
 export function drawText(c, originalText, x, y, angleOrNull) {
     //const { caretVisible, caretPosition } = state;
 	let text = convertLatexShortcuts(originalText);
-	c.font = '20px "Times New Roman", serif';
+	c.font = '20px sans-serif';
 	var width = c.measureText(text).width;
 
 	// center the text

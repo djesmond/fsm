@@ -7,8 +7,6 @@ const fsm = function fsm() {
       links: [],
       currentLink: null, // a link
       originalClick: undefined,
-      caretVisible: false,
-      caretPosition_: 0,
     },
     createNode(posX, posY) {
       const node = new Node(posX, posY);
