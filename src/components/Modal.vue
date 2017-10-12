@@ -1,28 +1,26 @@
 <template>
   <div id="exportModal" class="modal">
-    <div class="modalTitle">Export as:</div>
+    <div class="modalTitle">{{title}}</div>
     <div @click="requestClose" class="modalClose">
       <i class="fa fa-times" aria-hidden="true"></i>
     </div>
     <div class="modalContent">
-      <p>Note that the grid is not exported</p>
-      <a href="javascript:saveAsPNG()">PNG</a> |
-      <a href="javascript:saveAsSVG()">SVG</a> |
-      <a href="javascript:saveAsLaTeX()">LaTeX</a> |
-      <a href="javascript:saveAsJSON()">JSON</a>
-      <textarea id="output" class="exportOutput"></textarea>
+      <slot name="content"></slot>
     </div>
   </div>
 </template>
 <script>
 export default {
+  props: [
+    'title',
+  ],
   data() {
     return {
     }
   },
   methods: {
     requestClose() {
-      this.$emit('toggleExport', false);
+      this.$emit('toggleShow', false);
     }
   }
 };
@@ -62,10 +60,5 @@ export default {
   width: 90%;
   height: 70%;
 
-}
-.exportOutput {
-  width: 100%;
-  min-height: 100px;
-  height: 90%;
 }
 </style>

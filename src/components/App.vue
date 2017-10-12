@@ -11,7 +11,7 @@
         <div class="toolbox">
           <a href="javascript:clearCanvas()" class="toolboxButton clear">
             <i class="fa fa-trash" aria-hidden="true"></i>Clear</a>
-          <div class="toolboxButton import">
+          <div @click="showImport = !showImport" class="toolboxButton import">
             <i class="fa fa-upload" aria-hidden="true"></i>Import</div>
           <div @click="showExport = !showExport" class="toolboxButton export">
             <i class="fa fa-download" aria-hidden="true"></i>Export</div>
@@ -29,12 +29,14 @@
           <a href="http://paavo.me/">Paavo Huhtala</a> and
           <a href="https://github.com/djesmond">Niclas Sommer</a> in 2016 - 2017.</p>
       </footer>
-      <Modal v-show="showExport" v-on:toggleExport="toggleExport"/>
+      <ExportModal v-show="showExport" v-on:toggleExport="toggleExport"/>
+      <ImportModal v-show="showImport" v-on:toggleExport="toggleImport"/>
     </div>
   </div>
 </template>
 <script>
-import Modal from './Modal.vue';
+import ExportModal from './ExportModal.vue';
+import ImportModal from './ImportModal.vue';
 import Help from './Help.vue';
 import CanvasController from './CanvasController.vue';
 
@@ -43,16 +45,21 @@ export default {
     return {
       showHelp: true,
       showExport: false,
+      showImport: false,
     }
   },
   components: {
-    Modal,
+    ExportModal,
+    ImportModal,
     Help,
     CanvasController,
   },
   methods: {
     toggleExport(show) {
       this.showExport = show;
+    },
+    toggleImport(show) {
+      this.showImport = show;
     }
   },
 };
