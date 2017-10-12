@@ -5,8 +5,6 @@ const fsm = function fsm() {
     state: {
       nodes: [],
       links: [],
-      currentLink: null, // a link
-      originalClick: undefined,
     },
     createNode(posX, posY) {
       const node = new Node(posX, posY);
