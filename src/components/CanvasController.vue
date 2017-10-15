@@ -25,11 +25,11 @@
 import LabelInput from './LabelInput';
 import fsm from '../util/fsm';
 import mouse from '../util/mouse';
-import { Node } from '../elements/node';
-import { TemporaryLink } from '../elements/temporary_link';
-import { Link } from "../elements/link";
-import { SelfLink } from "../elements/self_link";
-import { StartLink } from "../elements/start_link";
+import node from '../elements/node';
+import temporaryLink from '../elements/temporaryLink';
+import link from "../elements/link";
+import selfLink from "../elements/selfLink";
+import startLink from "../elements/startLink";
 
 export default {
   props: [
@@ -89,7 +89,7 @@ export default {
       }
       if (e.shiftKey) {
         // Start drawing a link
-        this.currentLink = new TemporaryLink(position, position);
+        this.currentLink = temporaryLink({ from:position, to: position});
       }
 
       this.render();
@@ -101,7 +101,7 @@ export default {
       if (this.currentLink) {
         // Make sure that the link is valid:
         // It needs a target node
-        if (!(this.currentLink instanceof TemporaryLink)) {
+        if (!(this.currentLink.type === 'temporaryLink')) {
           this.selectedObject = this.currentLink;
           this.fsm.state.links.push(this.currentLink);
         }
@@ -115,7 +115,7 @@ export default {
       const target = this.selectObject(position.x, position.y);
       if (target) {
         // If we double clicked on the current node
-        if (target === this.selectedObject && target instanceof Node) {
+        if (target === this.selectedObject && target.type === 'node') {
           // Toggle the accept state
           this.selectedObject.isAcceptState = !this.selectedObject.isAcceptState;
         }
@@ -135,29 +135,29 @@ export default {
         // Get the current target
         let targetNode = this.selectObject(position.x, position.y);
         // If the target is not a Node
-        if (!(targetNode instanceof Node)) {
+        if (!(targetNode && targetNode.type === 'node')) {
           // Set it to null as we can only have links to nodes
           targetNode = null;
         }
         if (this.selectedObject === null) {
           // If we have a target Node we create a Link
           if (targetNode) {
-            this.currentLink = new StartLink(targetNode, this.originalClick);
+            this.currentLink = startLink({node: targetNode, start: this.originalClick});
           } else {
-            this.currentLink = new TemporaryLink(this.originalClick, position);
+            this.currentLink = temporaryLink({from: this.originalClick, to: position});
           }
         } else {
           // if the target is itself, create a loop
           if (targetNode === this.selectedObject) {
-            this.currentLink = new SelfLink(this.selectedObject, position);
+            this.currentLink = selfLink({node: this.selectedObject, mouse: position});
           } else if (targetNode) {
             // Otherwise we create a normal link
-            this.currentLink = new Link(this.selectedObject, targetNode);
+            this.currentLink = link({nodeA: this.selectedObject, nodeB: targetNode});
           } else {
             // Link still hasn't been connected
             // So we create a new Temp Link with new position
             // to make it "follow" the mouse
-            this.currentLink = new TemporaryLink(this.selectedObject.closestPointOnCircle(position.x, position.y), position);
+            this.currentLink = temporaryLink({from: this.selectedObject.closestPointOnCircle(position.x, position.y), to: position});
           }
         }
         this.render();
@@ -166,7 +166,7 @@ export default {
         if (this.movingObject) {
           // Update the position to the mouse position
           this.selectedObject.setAnchorPoint(position.x, position.y);
-          if (this.selectedObject instanceof Node) {
+          if (this.selectedObject.type === 'node') {
             // Snap nodes to align with others
             this.snapNode(this.selectedObject);
           }
@@ -177,7 +177,7 @@ export default {
 
     onDelete() {
       if (this.selectedObject) {
-        if (this.selectedObject instanceof Node) {
+        if (this.selectedObject.type ===  'node') {
           this.fsm.removeNode(this.selectedObject);
         } else {
           this.fsm.removeLink(this.selectedObject);

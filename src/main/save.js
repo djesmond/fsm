@@ -1,8 +1,8 @@
 
-import { Node } from "../elements/node"
-import { Link } from "../elements/link"
-import { StartLink } from "../elements/start_link"
-import { SelfLink } from "../elements/self_link"
+import { Node } from "../elements/nodeClass"
+import { Link } from "../elements/linkClass"
+import { StartLink } from "../elements/start_linkClass"
+import { SelfLink } from "../elements/self_linkClass"
 import { state } from "./state"
 
 export function restoreBackup() {

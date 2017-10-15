@@ -1,4 +1,4 @@
-import { Node } from '../elements/node';
+import node from '../elements/node';
 
 const fsm = function fsm() {
   return {
@@ -7,9 +7,9 @@ const fsm = function fsm() {
       links: [],
     },
     createNode(posX, posY) {
-      const node = new Node(posX, posY);
-      this.state.nodes.push(node);
-      return node;
+      const newNode = node({ x: posX, y: posY});
+      this.state.nodes.push(newNode);
+      return newNode;
     },
     removeNode(node) {
       this.state.nodes = this.state.nodes.filter((elm) => {
