@@ -13,22 +13,16 @@
       v-on:keyup.8="onDelete">
     </canvas>
   </div>
-  <div 
-    class="labelContainer"
-    v-show="selectedObject && !movingObject"
-    :style="labelInputPosition">
-    <div class="labelHeader">Label</div>
-    <input 
-      v-model="labelText" 
-      type="text"
-      placeholder="Label"
-      id="labelInput"
-      class="labelInput"
-      />
-  </div>
+  <LabelInput 
+    v-show="showLabel = this.selectedObject && !this.movingObject"
+    :style="labelInputPosition"
+    :text="getlabelText"
+    :showing="showLabel"
+    v-on:labelUpdate="labelUpdate" />
 </div>
 </template>
 <script>
+import LabelInput from './LabelInput';
 import fsm from '../util/fsm';
 import mouse from '../util/mouse';
 import { Node } from '../elements/node';
@@ -58,24 +52,15 @@ export default {
       // Record the location of mouse clicks on canvas
       // Used for creating links
       originalClick: null,
-      labelText: '',
+      // Control if the label input is showing
+      showLabel: false,
     }
   },
+  components: {
+    LabelInput
+  },
   watch: {
-    labelText(labelText) {
-      // Update the label on the selected object as we type
-      if (this.selectedObject) {
-        this.selectedObject.text = labelText;
-        this.render();
-      }
-    },
-    selectedObject(obj) {
-      if (obj) {
-        setTimeout(() => {
-          document.getElementById('labelInput').focus();
-        }, 200)
-      }
-    }
+
   },
   methods: {
     onMouseDown(e) {
@@ -87,13 +72,9 @@ export default {
       // If we hit a node or a link
       if (target) {
         this.selectedObject = target;
-
-        this.labelText = target.text;
-
         this.movingObject = true;
       } else if (this.selectedObject) { // We hit the canvas
         this.selectedObject = null;
-        this.labelText = '';
       }
       if (e.shiftKey) {
         // Start drawing a link
@@ -225,9 +206,12 @@ export default {
       });
     },
 
-    saveLabel() {
-      this.selectedObject.text = this.labelText;
-      this.labelText = '';
+    labelUpdate(label) {
+      // Update the label on the selected object as we type
+      if (this.selectedObject) {
+        this.selectedObject.text = label;
+        this.render();
+      }
     },
 
     render() {
@@ -278,7 +262,14 @@ export default {
       } else {
         return '';
       }
-    }
+    },
+    getlabelText() {
+      if (this.selectedObject) {
+        return this.selectedObject.text;
+      } else {
+        return '';
+      }
+    },
   },
   mounted() {
     // This needs to be refactored as we progress with moving control to Vue
@@ -303,32 +294,5 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .labelContainer {
-    position: absolute;
-    width: 150px;
-  }
-  .labelHeader {
-    border-radius: 3px 3px 0 0;
-    width: 100%;
-    height: 25px;
-    background-color: #ededed;
-    padding: 4px 8px 0 8px;
-    border: 1px solid #c3c3c3;
-    border-bottom: 0px;
-    color: grey;
-  }
-  .labelInput {
-    height: 15px;
-    width: 100%;
-    border-radius: 0 0 3px 3px;
-    border: 1px solid #c3c3c3;
-    -webkit-appearance: none;
-    font-size: 14px;
-    padding: 8px;
-    
-    &:focus {
-      border: 1px solid #c3c3c3;
-      outline: 0;
-    }
-  }
+
 </style>
