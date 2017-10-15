@@ -9,8 +9,8 @@
           </a>
         </div>
         <div class="toolbox">
-          <a href="javascript:clearCanvas()" class="toolboxButton clear">
-            <i class="fa fa-trash" aria-hidden="true"></i>Clear</a>
+          <div @click="clearCanvas" class="toolboxButton clear">
+            <i class="fa fa-trash" aria-hidden="true"></i>Clear</div>
           <div @click="showImport = !showImport" class="toolboxButton import">
             <i class="fa fa-upload" aria-hidden="true"></i>Import</div>
           <div @click="showExport = !showExport" class="toolboxButton export">
@@ -21,13 +21,14 @@
       </div>
       <div class="content">
         <Help v-show="showHelp"/>
-        <CanvasController />
+        <CanvasController :triggerClear="triggerClear" v-on:hasCleared="hasCleared" />
       </div>
       <footer>
         <p>Created by
           <a href="http://madebyevan.com/">Evan Wallace</a> in 2010, updated by
-          <a href="http://paavo.me/">Paavo Huhtala</a> and
-          <a href="https://github.com/djesmond">Niclas Sommer</a> in 2016 - 2017.</p>
+          <a href="http://paavo.me/">Paavo Huhtala (2016 - 2017)</a> and
+          <a href="https://github.com/djesmond">Niclas Sommer</a> in 2017
+        </p>
       </footer>
       <ExportModal v-show="showExport" v-on:toggleExport="toggleExport"/>
       <ImportModal v-show="showImport" v-on:toggleExport="toggleImport"/>
@@ -46,6 +47,7 @@ export default {
       showHelp: true,
       showExport: false,
       showImport: false,
+      triggerClear: false,
     }
   },
   components: {
@@ -60,6 +62,12 @@ export default {
     },
     toggleImport(show) {
       this.showImport = show;
+    },
+    clearCanvas() {
+      this.triggerClear = true;
+    },
+    hasCleared() {
+      this.triggerClear = false;
     }
   },
 };

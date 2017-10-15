@@ -20,6 +20,10 @@ const fsm = function fsm() {
       this.state.links = this.state.links.filter((elm) => {
         return elm !== link;
       });
+    },
+    clear() {
+      this.state.nodes = [];
+      this.state.links = [];
     }
   };
 };

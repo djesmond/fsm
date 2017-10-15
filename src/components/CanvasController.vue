@@ -32,6 +32,9 @@ import { SelfLink } from "../elements/self_link";
 import { StartLink } from "../elements/start_link";
 
 export default {
+  props: [
+    'triggerClear',
+  ],
   data() {
     return {
       // The state machine we are creating
@@ -60,7 +63,15 @@ export default {
     LabelInput
   },
   watch: {
-
+    triggerClear(shouldClear) {
+      if (shouldClear) {
+        this.fsm.clear();
+        this.selectedObject = null;
+        this.movingObject = false;
+        this.render();
+        this.$emit('hasCleared', true);
+      }
+    }
   },
   methods: {
     onMouseDown(e) {
