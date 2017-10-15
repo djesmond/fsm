@@ -31,7 +31,7 @@
         </p>
       </footer>
       <ExportModal v-show="showExport" v-on:toggleExport="toggleExport"/>
-      <ImportModal v-show="showImport" v-on:toggleExport="toggleImport"/>
+      <ImportModal v-show="showImport" v-on:toggleImport="toggleImport"/>
     </div>
   </div>
 </template>
