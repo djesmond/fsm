@@ -4,7 +4,7 @@
       <div class="headerContainer">
         <div class="header">
           <p class="headerTitle">Finite State Machine Designer 1.1</p>
-          <a href="https://github.com/paavohuhtala/fsm" class="github">
+          <a href="https://github.com/djesmond/fsm" class="github">
             <i class="fa fa-github fa-2x"></i>
           </a>
         </div>
