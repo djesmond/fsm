@@ -253,7 +253,51 @@ export default {
         this.currentLink.draw(this.context);
       }
       this.context.restore();
+      this.save();
     },
+
+    save() {
+      if (localStorage) {
+        localStorage['fsm'] = JSON.stringify(this.fsm.state);
+      }
+    },
+
+    loadSave() {
+      if (localStorage['fsm']) {
+        const state = JSON.parse(localStorage['fsm']);
+        let newFsm = fsm();
+
+        state.nodes.map((n) => {
+          newFsm.state.nodes.push(node(n));
+        });
+
+        state.links.map((l) => {
+          let newLink;
+          switch (l.type) {
+            case 'link':
+              // Update the nodes to the nodes from the fsm
+              const nodeA = newFsm.state.nodes.find((node) => node.containsPoint(l.nodeA.x, l.nodeA.y));
+              const nodeB = newFsm.state.nodes.find((node) => node.containsPoint(l.nodeB.x, l.nodeB.y));
+              newLink = link({...l, nodeA, nodeB});
+              break;
+            case 'startLink':
+              const startNode = newFsm.state.nodes.find((node) => node.containsPoint(l.node.x, l.node.y));
+              newLink = startLink({...l, node: startNode});
+              break;
+            case 'selfLink':
+              const selfNode = newFsm.state.nodes.find((node) => node.containsPoint(l.node.x, l.node.y));
+              newLink = selfLink({...l, node: selfNode});
+              break;
+            default:
+              break;
+          }
+          newFsm.state.links.push(newLink);
+        });
+        return newFsm;
+      } else {
+        return false;
+      }
+    }
 
   },
   computed: {
@@ -282,6 +326,12 @@ export default {
       }
     },
   },
+  created() {
+    if (localStorage['fsm']) {
+      this.fsm = this.loadSave();
+    }
+  },
+
   mounted() {
     // This needs to be refactored as we progress with moving control to Vue
     const el = document.getElementById('canvas');
@@ -301,6 +351,10 @@ export default {
         event.preventDefault();
       }
     }, false);
+    // Trigger an initial render
+    // Renders the loaded fsm if any
+    // Can only be done in mounted as it needs the canvas
+    this.render();
   }
 }
 </script>
