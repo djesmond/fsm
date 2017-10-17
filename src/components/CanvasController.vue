@@ -258,13 +258,13 @@ export default {
 
     save() {
       if (localStorage) {
-        localStorage['fsm'] = JSON.stringify(this.fsm.state);
+        localStorage.setItem('fsm', JSON.stringify(this.fsm.state));
       }
     },
 
     loadSave() {
-      if (localStorage['fsm']) {
-        const state = JSON.parse(localStorage['fsm']);
+      if (localStorage.getItem('fsm')) {
+        const state = JSON.parse(localStorage.getItem('fsm'));
         let newFsm = fsm();
 
         state.nodes.map((n) => {
@@ -327,7 +327,7 @@ export default {
     },
   },
   created() {
-    if (localStorage['fsm']) {
+    if (localStorage.getItem('fsm')) {
       this.fsm = this.loadSave();
     }
   },
