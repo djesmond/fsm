@@ -10,9 +10,7 @@ const defaultState = {
   text: '',
 };
 
-function node(state = {
- ...defaultState,
-}) {
+function node(state = {}) {
   return {
     ...defaultState,
     ...state,

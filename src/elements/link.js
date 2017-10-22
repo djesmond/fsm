@@ -12,9 +12,7 @@ const defaultState = {
   text: '',
 };
 
-function link(state = {
-  ...defaultState,
-}) {
+function link(state = {}) {
   return {
     ...defaultState,
     ...state,

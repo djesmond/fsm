@@ -9,7 +9,7 @@ const defaultState = {
   text: '',
 };
 
-function startLink(state = defaultState) {
+function startLink(state = {}) {
   let link = {
     ...defaultState,
     ...state,

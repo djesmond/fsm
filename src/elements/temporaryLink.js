@@ -5,7 +5,7 @@ const defaultState = {
   to: {x: 0, y: 0},
 };
 
-function temporaryLink(state = defaultState) {
+function temporaryLink(state = {}) {
   return {
     ...defaultState,
     ...state,
