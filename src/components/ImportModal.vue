@@ -1,6 +1,7 @@
 <template>
   <Modal :title="'Import machine:'" v-on:toggleShow="toggleShow">
     <div slot="content">
+      <p>Upload a JSON file with the state machine </p>
       <input type="file" @change="handleFiles" accept="application/json">
     </div>
   </Modal>

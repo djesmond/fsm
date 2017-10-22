@@ -2,10 +2,10 @@
   <Modal :title="'Export as:'" v-on:toggleShow="toggleShow">
     <div slot="content">
       <p>Note that the grid is not exported</p>
-      <a @click="saveAsPNG">PNG</a> |
-      <a @click="saveAsSVG">SVG</a> |
-      <a @click="saveAsLaTeX">LaTeX</a> |
-      <a @click="saveAsJSON">JSON</a>
+      <a class="button" @click="saveAsPNG">PNG</a>
+      <a class="button" @click="saveAsSVG">SVG</a>
+      <a class="button" @click="saveAsLaTeX">LaTeX</a>
+      <a class="button" @click="saveAsJSON">JSON</a>
     </div>
   </Modal>
 </template>
@@ -80,9 +80,18 @@ export default {
   }
 </script>
 <style lang="scss" scoped>
-.exportOutput {
-  width: 100%;
-  min-height: 100px;
-  height: 90%;
+.button {
+  display: inline-block;
+  background: #009688;
+  border-radius: 3px;
+  padding: 0 20px;
+  text-decoration: none;
+  color: #f9f6f2;
+  height: 40px;
+  line-height: 42px;
+  text-align: center;
+  margin: 10px 0;
+  cursor: pointer;
+  width: 100px;
 }
 </style>
