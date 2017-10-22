@@ -21,7 +21,11 @@
       </div>
       <div class="content">
         <Help v-show="showHelp"/>
-        <CanvasController :triggerClear="triggerClear" v-on:hasCleared="hasCleared" />
+        <CanvasController 
+          :triggerClear="triggerClear"
+          v-on:hasCleared="hasCleared"
+          :triggerExport="triggerExport"
+          v-on:exported="updateExport" />
       </div>
       <footer>
         <p>Created by
@@ -30,7 +34,7 @@
           <a href="https://github.com/djesmond">Niclas Sommer</a> in 2017
         </p>
       </footer>
-      <ExportModal v-show="showExport" v-on:toggleExport="toggleExport"/>
+      <ExportModal :state="exportState" v-show="showExport" v-on:toggleExport="toggleExport"/>
       <ImportModal v-show="showImport" v-on:toggleImport="toggleImport"/>
     </div>
   </div>
@@ -48,6 +52,8 @@ export default {
       showExport: false,
       showImport: false,
       triggerClear: false,
+      triggerExport: false,
+      exportState: {},
     }
   },
   components: {
@@ -68,8 +74,19 @@ export default {
     },
     hasCleared() {
       this.triggerClear = false;
+    },
+    updateExport(state) {
+      this.exportState = state;
+      this.triggerExport = false;
     }
   },
+  watch: {
+    showExport(show) {
+      if (show) {
+        this.triggerExport = true;
+      }
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

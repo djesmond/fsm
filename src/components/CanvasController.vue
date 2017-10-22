@@ -34,6 +34,7 @@ import startLink from "../elements/startLink";
 export default {
   props: [
     'triggerClear',
+    'triggerExport',
   ],
   data() {
     return {
@@ -70,6 +71,11 @@ export default {
         this.movingObject = false;
         this.render();
         this.$emit('hasCleared', true);
+      }
+    },
+    triggerExport(shouldExport) {
+      if (shouldExport) {
+        this.$emit('exported', this.fsm.state);
       }
     }
   },
