@@ -129,7 +129,6 @@ export default {
 
     onDrag(e) {
       const position = mouse.crossBrowserRelativeMousePos(e);
-
       // If we are drawing a new link
       if (this.currentLink) {
         // Get the current target
@@ -286,7 +285,9 @@ export default {
               break;
             case 'selfLink':
               const selfNode = newFsm.state.nodes.find((node) => node.containsPoint(l.node.x, l.node.y));
-              newLink = selfLink({...l, node: selfNode});
+              // Don't use the old mouse position and offset angle
+              // Otherwise the link will be placed incorrectly
+              newLink = selfLink({...l, node: selfNode, mouse: null, mouseOffsetAngle: 0});
               break;
             default:
               break;
