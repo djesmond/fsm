@@ -35,6 +35,7 @@ export default {
   props: [
     'triggerClear',
     'triggerExport',
+    'triggerLoad',
   ],
   data() {
     return {
@@ -76,6 +77,13 @@ export default {
     triggerExport(shouldExport) {
       if (shouldExport) {
         this.$emit('exported', this.fsm.state);
+      }
+    },
+    triggerLoad(shouldLoad) {
+      if (shouldLoad) {
+        this.fsm = this.loadSave();
+        this.render();
+        this.$emit('hasLoaded', true);
       }
     }
   },

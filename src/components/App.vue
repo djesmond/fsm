@@ -25,7 +25,9 @@
           :triggerClear="triggerClear"
           v-on:hasCleared="hasCleared"
           :triggerExport="triggerExport"
-          v-on:exported="updateExport" />
+          v-on:exported="updateExport"
+          :triggerLoad="triggerLoad"
+          v-on:hasLoaded="hasLoaded" />
       </div>
       <footer>
         <p>Created by
@@ -35,7 +37,7 @@
         </p>
       </footer>
       <ExportModal :state="exportState" v-show="showExport" v-on:toggleExport="toggleExport"/>
-      <ImportModal v-show="showImport" v-on:toggleImport="toggleImport"/>
+      <ImportModal v-show="showImport" v-on:toggleImport="toggleImport" v-on:triggerReload="triggerReload"/>
     </div>
   </div>
 </template>
@@ -54,6 +56,7 @@ export default {
       triggerClear: false,
       triggerExport: false,
       exportState: {},
+      triggerLoad: false,
     }
   },
   components: {
@@ -78,7 +81,13 @@ export default {
     updateExport(state) {
       this.exportState = state;
       this.triggerExport = false;
-    }
+    },
+    triggerReload() {
+      this.triggerLoad = true;
+    },
+    hasLoaded() {
+      this.triggerLoad = false;
+    },
   },
   watch: {
     showExport(show) {
