@@ -11,7 +11,6 @@ module.exports = function() { // eslint-disable-line
     target: 'web',
 
     entry: {
-      fsm: './main/fsm.js',
       app: './index.js',
     },
 
