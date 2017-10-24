@@ -1,11 +1,11 @@
 <template>
-  <div id="exportModal" class="modal">
+  <div class="modal">
     <div class="modalTitle">{{title}}</div>
-    <div @click="requestClose" class="modalClose">
-      <i class="fa fa-times" aria-hidden="true"></i>
-    </div>
     <div class="modalContent">
       <slot name="content"></slot>
+    </div>
+    <div class="modalButtonsContainer">
+      <div @click="requestClose" class="modalButton buttonClose">CLOSE</div>
     </div>
   </div>
 </template>
@@ -13,6 +13,7 @@
 export default {
   props: [
     'title',
+    'styling',
   ],
   data() {
     return {
@@ -28,37 +29,52 @@ export default {
 <style lang="scss" scoped>
 .modal {
   position: fixed;
-  width: 70%;
-  height: 60%;
-  top: 15%;
-  left: 15%;
   background-color: white;
   border-width: 1px;
   border-style: solid;
   border-color: lightgrey;
   border-radius: 4px;
+  z-index: 9999;
 }
 .modalTitle {
-  font-size: 20px;
-  padding: 16px;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 16px 16px 0 16px;
   width: 60%;
   display: inline-block;
-}
-
-.modalClose {
-  float: right;
-  position: relative;
-  right: 16px;
-  top: 16px;
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
 }
 
 .modalContent {
   margin: 16px;
   width: 90%;
-  height: 70%;
+  font-size: 16px;
+
+}
+
+.modalButtonsContainer {
+  border: 1px solid #eee;
+  width: 100%;
+  display: flex;
+  position: absolute;
+  bottom: 0px;
+  flex-wrap: nowrap;
+
+.modalButton {
+  flex-grow: 1;
+  text-align: center;
+  height: 44px;
+  line-height: 44px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  &:hover {
+    background: rgba(0, 0, 0, 0.01);
+  }
+  &:not(:first-child) {
+    border-left: 1px solid #eee;
+  }
+}
+
 
 }
 </style>

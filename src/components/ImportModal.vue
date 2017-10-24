@@ -1,5 +1,5 @@
 <template>
-  <Modal :title="'Import machine:'" v-on:toggleShow="toggleShow">
+  <Modal class="importModal" :title="'Import machine'" v-on:toggleShow="toggleShow">
     <div slot="content">
       <p>Upload a JSON file with the state machine </p>
       <input type="file" @change="handleFiles" accept="application/json">
@@ -42,4 +42,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.importModal {
+  width: 350px;
+  height: 180px;
+  left: 35%;
+  top: 30%;
+}
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <Modal :title="'Export as:'" v-on:toggleShow="toggleShow">
+  <Modal class="exportModal" :title="'Export as'" v-on:toggleShow="toggleShow">
     <div slot="content">
       <p>Note that the grid is not exported</p>
       <a class="button" @click="saveAsPNG">PNG</a>
@@ -82,16 +82,27 @@ export default {
 <style lang="scss" scoped>
 .button {
   display: inline-block;
-  background: #009688;
+  //background: #009688;
+  border: 1px solid #dddedf;
   border-radius: 3px;
   padding: 0 20px;
   text-decoration: none;
-  color: #f9f6f2;
+  //color: #f9f6f2;
+  color:#8b8c8d;
   height: 40px;
   line-height: 42px;
   text-align: center;
   margin: 10px 0;
   cursor: pointer;
-  width: 100px;
+  width: 80%;
+  &:hover {
+    background: rgba(0, 0, 0, 0.01);
+  }
+}
+.exportModal {
+  width: 300px;
+  height: 400px;
+  top: 30%;
+  left: 35%; 
 }
 </style>
